@@ -1,4 +1,4 @@
-function permgen(a)
+function permgen(a, n)
     n = n or #a 
     if n <= 1 then 
         coroutine.yield(a)
@@ -6,10 +6,11 @@ function permgen(a)
         for i = 1, n do 
             a[n], a[i] = a[i], a[n]
             permgen(a, n - 1)
-            a[n], a[i] = a[i], a[n] -- Restore the original order after recursive call
+            a[i], a[n] = a[n], a[i] -- Restore the original order after recursive call
         end 
     end
 end
+
 
 function  permutations(a)
     local co = coroutine.create(function ()
@@ -23,10 +24,16 @@ end
 
 function printResult(a)
     for i = 1, #a do 
-        io.write(a[i], " ") 
+        if a[i] then
+            io.write(a[i], " ") 
+        else
+            io.write("nil ", " ")
+        end
     end
     io.write("\n")
 end
+
+
 
 for p in permutations({"a","b","c"}) do
     printResult(p)
